@@ -1,7 +1,9 @@
+from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render
-from django.http import HttpRequest, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
+
+from .models import OCR
 from .ocr import ocr
 
 
@@ -11,7 +13,11 @@ from .ocr import ocr
 @require_http_methods(["POST"])
 def api_images(request: HttpRequest):
     file = request.FILES["image"]
-    return HttpResponse(ocr(file.temporary_file_path()))
+    result = {
+        'content': ocr(file.temporary_file_path()).split(),
+    }
+    OCR.objects.create(image=file, result=result)
+    return JsonResponse(result)
 
 
 @require_http_methods(["GET"])

@@ -1,14 +1,11 @@
-from PIL import Image
-import pytesseract
-import argparse
-import cv2
 import os
 
+import cv2
+import pytesseract
+from PIL import Image
 
-# ap = argparse.ArgumentParser()
-# ap.add_argument("-i", "--image", required=True, help="path to input image to be OCR'd")
-# ap.add_argument("-p", "--preprocess", type=str, default="thresh", help="type of preprocessing to be done")
-# args = vars(ap.parse_args())
+from .utils import random_image_name
+
 
 def ocr(image_path, preprocess="thresh"):
     # load the example image and convert it to grayscale
@@ -23,15 +20,9 @@ def ocr(image_path, preprocess="thresh"):
         gray = cv2.medianBlur(gray, 3)
 
     # write the grayscale image to disk as a temporary file so we can apply OCR to it
-    filename = f"{os.getpid()}.png"
+    filename = random_image_name(image_path)
     cv2.imwrite(filename, gray)
     # load the image as a PIL/Pillow image, apply OCR, and then delete the temporary file
     text = pytesseract.image_to_string(Image.open(filename))
     os.remove(filename)
     return text
-
-    # show the output images
-    # cv2.imshow("Image", image)
-    # cv2.imshow("Output", gray)
-    # cv2.waitKey(15000)
-    # cv2.destroyAllWindows()
