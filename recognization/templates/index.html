@@ -1,0 +1,84 @@
+
+<head>
+    <meta charset="utf-8">
+    <title>Vue 测试实例 - 菜鸟教程(runoob.com)</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <!-- <label for="image">Choose a image file:</label>
+        <input type="file" id="image" name="aaa" accept="image/*" onchange="loadfile(event)">
+        <img id="output">
+        <input type="button" value="aaa" > -->
+        <!-- action="http://127.0.0.1:8000/recognization/api/images/"> -->
+        <!-- <form id="ocr" enctype="multipart/form-data" method="post" onsubmit="form_submit(event)"></form> -->
+        <!-- <form id="ocr" ref="form" enctype="multipart/form-data" method="post"
+            action="http://127.0.0.1:8000/recognization/api/images/"> -->
+        <form v-on:submit="submit">
+            {% csrf_token %}
+            <!-- action="form_submit(event)"> -->
+            <label for="image">Choose a image file:</label>
+            <input id="image" name="image"  type="file" v-on:change="upload"/>
+            <!-- v-on:change="preview" /> -->
+            <!-- <input type="text" name="aaa" id="foo" v-model="image_file"> -->
+            <input type="submit" value="ocr" id="submit" />
+            <!-- <button v-on:click="submit">ocr</button> -->
+        </form>
+        <img v-bind:src="image_src" alt="image here"/>
+        <p>[[ response ]]</p>
+
+    </div>
+    <script>
+        // let loadfile = function(event) {
+        //     let image = document.getElementById('output');
+        //     image.src = URL.createObjectURL(event.target.files[0]);
+        // }
+
+        // let form_submit = function (event) {
+        //     console.log(event);
+        // }
+        // let form = document.getElementById("ocr");
+        // form.onsubmit = function (event) {
+        //     event.preventDefault();
+        //     console.log(event);
+        // }
+        const app = new Vue({
+            el: '#app',
+            delimiters: ['[[', ']]'],
+            data: {
+                image_file: null,
+                image_src: '',
+                response: '',
+            },
+            methods: {
+                submit: function (event) {
+                    event.preventDefault();
+                    let form_data = new FormData();
+                    form_data.append('image', this.image_file, this.image_file.name);
+                    this.$http.post('http://127.0.0.1:8000/recognization/api/images/', form_data, {
+                    headers: {
+                    'Content-Type': 'multipart/form-data',
+                    }
+                    }).then(function (result) {
+                        this.response = result.body;
+                    }, function (error) {
+                    console.log(error);
+                    });
+                },
+                upload: function (event) {
+                    console.log(event);
+                    this.image_file = event.target.files[0];
+                    this.image_src = URL.createObjectURL(this.image_file);
+                }
+            }
+
+        })
+    </script>
+</body>
+
+</html>
