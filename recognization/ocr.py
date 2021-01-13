@@ -25,4 +25,4 @@ def ocr(image_path, preprocess="thresh"):
     # load the image as a PIL/Pillow image, apply OCR, and then delete the temporary file
     text = pytesseract.image_to_string(Image.open(filename))
     os.remove(filename)
-    return text
+    return text.split()

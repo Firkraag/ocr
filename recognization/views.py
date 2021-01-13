@@ -14,7 +14,7 @@ from .ocr import ocr
 def api_images(request: HttpRequest):
     file = request.FILES["image"]
     result = {
-        'content': ocr(file.temporary_file_path()).split(),
+        'content': ocr(file.temporary_file_path()),
     }
     OCR.objects.create(image=file, result=result)
     return JsonResponse(result)
