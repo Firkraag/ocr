@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3.9
 ADD . /ocr
 WORKDIR /ocr
 #RUN mv /etc/apt/sources.list /etc/apt/sources.list.bak && \
@@ -8,5 +8,4 @@ WORKDIR /ocr
 # libgl1-mesa-glx is required by python package opencv
 RUN apt update && apt install -y libgl1-mesa-glx tesseract-ocr
 RUN pip install -r requirements.txt
-RUN python manage.py migrate
-RUN python manage.py test
+RUN python manage.py migrate && python manage.py test

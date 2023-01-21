@@ -30,7 +30,7 @@ The ocr test will evaluate the [edit distance](https://en.wikipedia.org/wiki/Edi
 
 - Django~=3.1.5
 
-- editdistance~=0.5.3: evaluate the [edit distance](https://en.wikipedia.org/wiki/Edit_distance) between the actual string and the string we get from image.
+- editdistance~=0.5.3: evaluate the [edit distance](https://en.wikipedia.org/wiki/Edit_distance) between the actual string and the string we get from the image.
 
 - opencv-python: preprocess the image, perform a threshold to segment the foreground from the background,
 
